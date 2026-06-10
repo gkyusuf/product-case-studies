@@ -1,4 +1,4 @@
-# E-Koç — YKS exam preparation platform
+# e-Koç — Cross-Platform EdTech System & Multi-Tenant Management Platform
 
 ## Context
 
