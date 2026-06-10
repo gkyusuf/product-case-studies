@@ -41,13 +41,37 @@ Coach web dashboard    ──┤
 
 ### Selected engineering work
 
-| Area | Description |
-|------|-------------|
-| Coach dashboard | Student list, detail views, weekly plan builder, appointment schedule, exam result statistics with subject-level breakdown |
-| Exam analytics | TYT/AYT net calculation (4 wrong = 1 correct deducted), date-based progress graphs, server-side cache for analytics modal |
-| PDF reports | Automated exam and weekly plan reports (PDFKit) |
-| Security | RLS policies, centralized rate limiting (Upstash Redis with in-memory fallback), CSP and security headers on deploy |
-| Billing UX | Subscription and capacity management flows on the coach dashboard (phased rollout) |
+#### Coach dashboard and API layer
+
+Built the coach-facing web panel end to end: student roster, invitation and pending-request flows, weekly and daily plan review, appointment scheduling, coach notes, and student detail views with paginated weekly reports. Backend exposes a JWT-authenticated REST API (`/api/dashboard/*`) on Netlify Functions (Express). Coach–student data isolation enforced at the database layer through Supabase RLS.
+
+#### Exam analytics and scoring
+
+Implemented TYT/AYT net scoring using the official rule set (four incorrect answers deduct one correct answer). Added subject-level breakdowns, date-based progress views, and an analytics modal backed by a five-minute server-side cache to avoid repeated aggregate queries on the same exam result.
+
+#### Cross-platform plan and scheduling model
+
+Defined a shared week-start and day-of-week convention (0 = Monday) used by both the Flutter mobile app and the web dashboard, so coaches and students operate on the same plan boundaries. Mobile daily-task completion flows sync back to the shared Supabase schema consumed by the coach panel.
+
+#### PDF report pipeline
+
+Server-side PDF generation (PDFKit) for exam summaries and weekly study plans. Separated view-model logic from template rendering so report content can evolve without changing the data layer.
+
+#### Performance and caching
+
+Introduced a TTL-based client cache (sessionStorage) with per-resource invalidation rules, plus server-side caching on hot analytics endpoints. Combined with auth and query-path optimizations, this reduced database load on frequently accessed dashboard routes (internal measurement: roughly 50–60% fewer requests on cached paths).
+
+#### Authentication and onboarding
+
+Coach registration and login via Supabase Auth, with SMS OTP verification (Firebase). Public landing site with pricing and early-access flows. Invitation-code system linking mobile students to coach accounts.
+
+#### Security and deployment
+
+Row-level security across coach and student tables, centralized rate limiting (Upstash Redis with in-memory fallback), CSP with nonce-based script loading on dashboard pages, and security headers configured in the Netlify deploy pipeline.
+
+#### Subscription and capacity (in progress)
+
+Phased billing UX on the coach dashboard: subscription tier display and student capacity limits. Payment integration planned; current release covers product-side flows and UI.
 
 ## Outcome
 
