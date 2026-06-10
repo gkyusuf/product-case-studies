@@ -2,7 +2,7 @@
 
 ## Context
 
-E-Koç is a commercial education product for students preparing for the Turkish university entrance exam (TYT/AYT). The platform connects coaches with students: coaches manage plans, review exam results, and communicate through a web dashboard; students track progress, record practice exam scores, and follow study plans through a mobile app.
+E-Koç is a commercial education product for students preparing for the Turkish university entrance exam (TYT/AYT). The platform connects coaches with students: coaches manage plans, review exam results, and track progress through a web dashboard; students record practice exam scores, follow study plans, and view analytics through a mobile app.
 
 ## Problem
 
@@ -12,24 +12,24 @@ YKS preparation involves scattered data: practice exam scores, subject-level per
 
 The system is split into two surfaces sharing a common backend:
 
-- **Mobile app (student)** — score entry, subject analysis, study plans, progress charts, coach messaging
+- **Mobile app (student)** — score entry, subject analysis, study plans, progress charts
 - **Web dashboard (coach)** — student management, weekly plan builder, exam analytics, scheduling, subscription and capacity management
 
-Both clients connect to Supabase (authentication, database, row-level security, realtime) with server-side logic on Netlify Functions (Express API).
+Both clients connect to Supabase (authentication, database, row-level security, realtime). Server-side business logic runs on Netlify Functions (Express API).
 
 ### Architecture
 
 ```
 Student app (Flutter)  ──┐
                          ├── Supabase (Auth, DB, RLS, Realtime)
-Coach web dashboard  ────┤
-                         └── Netlify Functions (API, PDF, notifications)
+Coach web dashboard    ──┤
+                         └── Netlify Functions (Express API, PDF generation)
 ```
 
 ### Web stack
 
-- HTML, Tailwind CSS, vanilla JavaScript
-- Supabase client for auth and data access
+- Modern JavaScript (ES6+), Tailwind CSS
+- Supabase JS client for authentication and data access
 - Netlify Functions (Node.js 18, Express) for API routes, PDF report generation, and integrations
 - Server-side caching for exam analytics endpoints
 
@@ -37,7 +37,6 @@ Coach web dashboard  ────┤
 
 - Flutter (Dart)
 - Supabase Auth and direct database access with RLS
-- Push notifications (FCM on Android, APNs on iOS)
 - Shared week-start and scheduling logic aligned with the coach dashboard
 
 ### Selected engineering work
@@ -46,9 +45,8 @@ Coach web dashboard  ────┤
 |------|-------------|
 | Coach dashboard | Student list, detail views, weekly plan builder, appointment schedule, exam result statistics with subject-level breakdown |
 | Exam analytics | TYT/AYT net calculation (4 wrong = 1 correct deducted), date-based progress graphs, server-side cache for analytics modal |
-| Messaging | Real-time chat between coach and student; push notification pipeline via Supabase Edge Functions |
 | PDF reports | Automated exam and weekly plan reports (PDFKit) |
-| Security | RLS policies, rate limiting (Upstash Redis), CSP and security headers on deploy |
+| Security | RLS policies, centralized rate limiting (Upstash Redis with in-memory fallback), CSP and security headers on deploy |
 | Billing UX | Subscription and capacity management flows on the coach dashboard (phased rollout) |
 
 ## Outcome

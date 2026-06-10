@@ -19,6 +19,12 @@ End-to-end delivery of a content-focused marketing website:
 
 The site is deployed and maintained as a standalone project. Source code is not public per client agreement.
 
+### Tech stack and delivery
+
+- HTML5, CSS3, JavaScript
+- Responsive layout for mobile and desktop
+- Production deployment and hosting management
+
 ## Outcome
 
 - Live at [iskanaydeniz.com](https://iskanaydeniz.com)
