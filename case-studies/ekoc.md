@@ -26,52 +26,27 @@ Coach web dashboard    ──┤
                          └── Netlify Functions (Express API, PDF generation)
 ```
 
-### Web stack
+### Stack
 
-- Modern JavaScript (ES6+), Tailwind CSS
-- Supabase JS client for authentication and data access
-- Netlify Functions (Node.js 18, Express) for API routes, PDF report generation, and integrations
-- Server-side caching for exam analytics endpoints
+**Web:** JavaScript, Tailwind CSS, Supabase client, Netlify Functions (Node.js, Express)
 
-### Mobile stack
+**Mobile:** Flutter, Supabase
 
-- Flutter (Dart)
-- Supabase Auth and direct database access with RLS
-- Shared week-start and scheduling logic aligned with the coach dashboard
+### Engineering highlights
 
-### Selected engineering work
+- **Product architecture** — Two client surfaces (Flutter app, coach web dashboard) on a shared Supabase backend with a serverless API layer for business logic, reporting, and integrations.
 
-#### Coach dashboard and API layer
+- **Coach platform** — Operational dashboard covering student management, planning, scheduling, exam analytics, PDF reporting, and coach notes. Multi-tenant data model with database-level isolation per coach.
 
-Built the coach-facing web panel end to end: student roster, invitation and pending-request flows, weekly and daily plan review, appointment scheduling, coach notes, and student detail views with paginated weekly reports. Backend exposes a JWT-authenticated REST API (`/api/dashboard/*`) on Netlify Functions (Express). Coach–student data isolation enforced at the database layer through Supabase RLS.
+- **Cross-platform consistency** — Shared domain model for plans and scheduling across mobile and web so coaches and students work from the same source of truth.
 
-#### Exam analytics and scoring
+- **Performance** — Client and server-side caching on high-traffic dashboard paths; reduced database load on production workloads.
 
-Implemented TYT/AYT net scoring using the official rule set (four incorrect answers deduct one correct answer). Added subject-level breakdowns, date-based progress views, and an analytics modal backed by a five-minute server-side cache to avoid repeated aggregate queries on the same exam result.
+- **Go-to-market** — Public landing and pricing, coach onboarding with OTP verification, invitation-based student linking.
 
-#### Cross-platform plan and scheduling model
+- **Production posture** — RLS, rate limiting, CSP, and deploy-time security headers on a serverless infrastructure.
 
-Defined a shared week-start and day-of-week convention (0 = Monday) used by both the Flutter mobile app and the web dashboard, so coaches and students operate on the same plan boundaries. Mobile daily-task completion flows sync back to the shared Supabase schema consumed by the coach panel.
-
-#### PDF report pipeline
-
-Server-side PDF generation (PDFKit) for exam summaries and weekly study plans. Separated view-model logic from template rendering so report content can evolve without changing the data layer.
-
-#### Performance and caching
-
-Introduced a TTL-based client cache (sessionStorage) with per-resource invalidation rules, plus server-side caching on hot analytics endpoints. Combined with auth and query-path optimizations, this reduced database load on frequently accessed dashboard routes (internal measurement: roughly 50–60% fewer requests on cached paths).
-
-#### Authentication and onboarding
-
-Coach registration and login via Supabase Auth, with SMS OTP verification (Firebase). Public landing site with pricing and early-access flows. Invitation-code system linking mobile students to coach accounts.
-
-#### Security and deployment
-
-Row-level security across coach and student tables, centralized rate limiting (Upstash Redis with in-memory fallback), CSP with nonce-based script loading on dashboard pages, and security headers configured in the Netlify deploy pipeline.
-
-#### Subscription and capacity (in progress)
-
-Phased billing UX on the coach dashboard: subscription tier display and student capacity limits. Payment integration planned; current release covers product-side flows and UI.
+- **Commercial layer** — Subscription and capacity UX on the dashboard; payment integration in progress.
 
 ## Outcome
 
