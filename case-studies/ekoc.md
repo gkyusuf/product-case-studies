@@ -50,7 +50,7 @@ Coach web dashboard    ──┤
 
 ## Outcome
 
-- Mobile app published on [Google Play](https://play.google.com/store/apps/details?id=com.ekoc.e_koc) and [App Store](https://apps.apple.com/tr/app/e-ko%C3%A7-yks-takip-ve-analiz/id6757975623) with 1,000+ installs
+- Mobile app published on [Google Play](https://play.google.com/store/apps/details?id=com.ekoc.e_koc) and [App Store](https://apps.apple.com/tr/app/e-ko%C3%A7-yks-takip-ve-analiz/id6757975623) with 1,400+ installs across both stores
 - Web product live at [ekocapp.com.tr](https://ekocapp.com.tr)
 - Used in production by coaches and students in the YKS preparation market
 
